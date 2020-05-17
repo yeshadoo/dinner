@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+
+    <!-- 默认访问页面 -->
+    <package name="default" extends="struts-default" namespace="/">
+        <default-action-ref name="default" />
+        <action name="default">
+            <result>/WEB-INF/view/index.jsp</result>
+        </action>
+    </package>
+
+    <!-- 商品相关请求转发 -->
+    <!-- Struts2在2.5版本后添加strict-method-invocation(严格方法访问)，默认为true，不能使用动态方法调用功能，故需设为false -->
+    <package name="product" extends="struts-default" namespace="/"
+             strict-method-invocation="false">
+        <!-- 保存商品 -->
+        <action name="product_*" class="productAction" method="{1}Product">
+            <result>/index.jsp</result>
+            <result name="input">/index.jsp</result>
+        </action>
+
+<!--    登录    -->
+        <action name="login" class="com.hadoo.action.LoginAction">
+            <result name="success" type="redirect">listFood.action</result>
+            <result name="error">/error.jsp</result>
+        </action>
+<!--        管理员登录-->
+        <action name="manager_login" class="com.hadoo.action.ManagerLoginAction">
+            <result name="success" type="redirect">manager_listFood.action</result>
+            <result name="error">/error.jsp</result>
+        </action>
+<!--      注册  -->
+        <action name="reg" class="com.hadoo.action.RegAction">
+            <result name="success" type="redirect">/reg_success.jsp?name=${user.username}</result>
+        </action>
+
+        <action name="listFood" class="com.hadoo.action.FoodListAction">
+            <result name="success">/main.jsp</result>
+        </action>
+        <action name="manager_listFood" class="com.hadoo.action.ManagerFoodListAction">
+            <result name="success">/manager.jsp</result>
+        </action>
+        <action name="deleteFood" class="com.hadoo.action.DeleteFoodAction">
+            <result name="success" type="redirect">manager_listFood.action</result>
+        </action>
+        <action name="updateFood" class="com.hadoo.action.UpdateFoodAction">
+            <result name="success" type="redirect">manager_listFood.action</result>
+        </action>
+        <action name="findFood" class="com.hadoo.action.FindFoodById">
+            <result name="success" >/updateFood.jsp</result>
+        </action>
+        <action name="saveFood" class="com.hadoo.action.SaveFoodAction">
+            <result name="success" type="redirect">manager_listFood.action</result>
+        </action>
+        <action name="findFoodByName" class="com.hadoo.action.FindFoodByName">
+            <result name="success" >/main.jsp</result>
+        </action>
+        <action name="showUserByRole" class="com.hadoo.action.ShowUserByRole">
+            <result name="success" >/showUser.jsp</result>
+        </action>
+        <action name="showUserByName" class="com.hadoo.action.ShowUserByName">
+            <result name="success" >/showUser.jsp</result>
+        </action>
+        <action name="addOrder" class="com.hadoo.action.AddOrderAction">
+            <result name="success" type="redirect">listFood.action</result>
+        </action>
+        <action name="showOrder" class="com.hadoo.action.OrderListAction">
+            <result name="success">/showOrder.jsp</result>
+        </action>
+        <action name="updateOrder" class="com.hadoo.action.UpdateOrderAction">
+            <result name="success" type="redirect">manager_showOrder.action</result>
+        </action>
+        <action name="manager_showOrder" class="com.hadoo.action.ManagerOrderListAction">
+            <result name="success">/manager_show_order.jsp</result>
+        </action>
+    </package>
+
+    <!-- 引入资源文件 -->
+    <constant name="struts.custom.i18n.resources" value="messageResource"></constant>
+
+</struts>
